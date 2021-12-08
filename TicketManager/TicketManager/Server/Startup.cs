@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using System.Linq;
 using TicketManager.Server.Data;
 using TicketManager.Server.Models;
+using TicketManager.Server.Services;
 
 namespace TicketManager.Server
 {
@@ -43,6 +44,8 @@ namespace TicketManager.Server
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddTransient<IRolesService, RolseService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
