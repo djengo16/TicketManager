@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TicketManager.Server.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace TicketManager.Server.Services
 {
@@ -13,6 +14,11 @@ namespace TicketManager.Server.Services
         public RolseService(ApplicationDbContext dbContext)
         {
             this._dbContext = dbContext;
+        }
+
+        public async Task CreateUserRole(string roleId, string userId)
+        {
+          //  await _dbContext.UserRoles.AddAsync(new IdentityUserRole<string>( UserId = userId, RoleId = roleId );
         }
 
         public IEnumerable<KeyValuePair<string, string>> GetAllAsKeyValuePairs()
