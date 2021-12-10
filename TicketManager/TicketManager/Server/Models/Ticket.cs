@@ -1,4 +1,5 @@
 ﻿using TicketManager.Shared;
+using TicketManager.Shared.Models;
 
 namespace TicketManager.Server.Models
 {

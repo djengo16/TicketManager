@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31829.152
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketManager.Server", "TicketManager\Server\TicketManager.Server.csproj", "{1DAB386B-77E1-4495-8247-ACCA0A9BE03B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketManager.Server", "TicketManager\Server\TicketManager.Server.csproj", "{1DAB386B-77E1-4495-8247-ACCA0A9BE03B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketManager.Client", "TicketManager\Client\TicketManager.Client.csproj", "{E6392260-B82B-4070-8BA3-2770AEDE6204}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketManager.Client", "TicketManager\Client\TicketManager.Client.csproj", "{E6392260-B82B-4070-8BA3-2770AEDE6204}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketManager.Shared", "TicketManager\Shared\TicketManager.Shared.csproj", "{486DD2F3-F404-4297-8B9F-0B4D8D07042C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketManager.Shared", "TicketManager\Shared\TicketManager.Shared.csproj", "{486DD2F3-F404-4297-8B9F-0B4D8D07042C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

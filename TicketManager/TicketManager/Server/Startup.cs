@@ -48,6 +48,7 @@ namespace TicketManager.Server
             services.AddRazorPages();
 
             services.AddTransient<IRolesService, RolseService>();
+            services.AddTransient<ITicketsService, TicketsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using TicketManager.Server.Data;
 using TicketManager.Server.Models;
-using TicketManager.Server.Models.DataModels;
+using TicketManager.Shared.DtoModels;
+using TicketManager.Shared.Models;
 
 namespace TicketManager.Server.Services
 {
@@ -13,7 +15,7 @@ namespace TicketManager.Server.Services
             _dbContext = dbContext;
         }
 
-        public async Task<int> CreateTicketAsync(TicketInputModel ticketInput)
+        public async Task<int> CreateTicketAsync(CreateTicketModel ticketInput)
         {
             var ticket = await _dbContext.Tickets.AddAsync(new Ticket
             {
@@ -22,8 +24,8 @@ namespace TicketManager.Server.Services
                 ReceiverId = ticketInput.ReceiverId,
                 CreatorId = ticketInput.CreatorId,
                 ImgUrl = ticketInput.ImgUrl,
-                Audience = ticketInput.Audience
-            });
+                Audience = (Audience)Enum.Parse(typeof(Audience), ticketInput.Audience)
+        });
             await _dbContext.SaveChangesAsync();
 
             return ticket.Entity.Id;

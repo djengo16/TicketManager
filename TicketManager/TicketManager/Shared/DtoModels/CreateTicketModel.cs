@@ -11,7 +11,7 @@ namespace TicketManager.Shared.DtoModels
         [Required]
         public string Content { get; set; }
         [Required]
-        public Audience Audience { get; set; }
+        public string Audience { get; set; }
         [Required]
         public string ImgUrl { get; set; }
         [Required]

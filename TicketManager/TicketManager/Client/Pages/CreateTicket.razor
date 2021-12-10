@@ -1,0 +1,48 @@
+﻿@page "/createTicket"
+@using TicketManager.Shared.DtoModels;
+<h3>Create new Ticket</h3>
+
+<div class="row">
+    <div class="col-sm-9 col-md-7 col-lg-5 my-3">
+        <EditForm Model="model" OnValidSubmit="Submit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="mb-3">
+                <label for="@model.Title" class="form-label">Title</label>
+                <InputText class="form-control" @bind-Value="model.Title" />
+            </div>
+            <div class="mb-3">
+                <label for="@model.Content" class="form-label">Content</label>
+                <InputTextArea class="form-control" rows="5" @bind-Value="model.Content" />
+            </div>
+            <div class="mb-3">
+                <label for="@model.ImgUrl" class="form-label">Image url</label>
+                <InputText class="form-control" @bind-Value="model.ImgUrl" />
+            </div>
+            <div class="mb-3">
+                <label for="@model.Audience" class="form-label">Select your audiance</label>
+                <InputSelect class="form-control" @bind-Value="model.Audience">
+                    <option value="Me">Me</option>
+                    <option value="Everyone">Everyone</option>
+                </InputSelect>
+            </div>
+            <div class="mb-3">
+                <label for="@model.ReceiverId" class="form-label">Select support</label>
+                <InputSelect class="form-control" @bind-Value="model.ReceiverId">
+                    <option value="4">Office support</option>
+                    <option value="5">Technical support</option>
+                </InputSelect>
+            </div>
+            <button class="btn btn-success btn-lg" type="submit">Create Ticket</button>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    public CreateTicketModel model { get; set; } = new CreateTicketModel();
+
+    async Task Submit()
+    {
+
+    }
+}

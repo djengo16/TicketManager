@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
 using TicketManager.Shared.DtoModels;
 
-namespace TicketManager.Server.Services
+namespace TicketManager.Client.ClientServices
 {
     public interface ITicketsService
     {
-        Task<int> CreateTicketAsync(CreateTicketModel ticketInput);
+        Task<CreateTicketModel> CreateTicket(CreateTicketModel ticket);
     }
 }

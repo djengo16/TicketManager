@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using TicketManager.Client.ClientServices;
 
 namespace TicketManager.Client
 {
@@ -25,6 +26,8 @@ namespace TicketManager.Client
             builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("TicketManager.ServerAPI"));
 
             builder.Services.AddApiAuthorization();
+
+            builder.Services.AddScoped<ITicketsService, TicketsService>();
 
             await builder.Build().RunAsync();
         }
