@@ -1,4 +1,6 @@
-﻿namespace TicketManager.Server.Models
+﻿using TicketManager.Shared;
+
+namespace TicketManager.Server.Models
 {
     public class Ticket
     {

@@ -1,4 +1,4 @@
-﻿namespace TicketManager.Server.Models
+﻿namespace TicketManager.Shared.Models
 {
     public enum Audience
     {
