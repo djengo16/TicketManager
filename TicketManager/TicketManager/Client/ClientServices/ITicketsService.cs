@@ -5,6 +5,6 @@ namespace TicketManager.Client.ClientServices
 {
     public interface ITicketsService
     {
-        Task<CreateTicketModel> CreateTicket(CreateTicketModel ticket);
+        Task CreateTicket(CreateTicketModel ticket);
     }
 }

@@ -26,6 +26,7 @@ namespace TicketManager.Client
             builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("TicketManager.ServerAPI"));
 
             builder.Services.AddApiAuthorization();
+           // builder.Services.AddHttpContextAccessor();
 
             builder.Services.AddScoped<ITicketsService, TicketsService>();
 
