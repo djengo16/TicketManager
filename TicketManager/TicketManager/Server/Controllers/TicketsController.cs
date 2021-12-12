@@ -14,13 +14,10 @@ namespace TicketManager.Server.Controllers
     public class TicketsController : ControllerBase
     {
         private readonly ITicketsService _ticketsService;
-        private readonly UserManager<ApplicationUser> _userManager;
 
-        public TicketsController(ITicketsService ticketsService,
-             UserManager<ApplicationUser> userManager)
+        public TicketsController(ITicketsService ticketsService)
         {
             this._ticketsService = ticketsService;
-            this._userManager = userManager;
         }
 
         [Authorize]
@@ -29,6 +26,14 @@ namespace TicketManager.Server.Controllers
         {
             var res = await this._ticketsService.CreateTicketAsync(ticket);
             return this.Ok(res);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetTickets()
+        {
+            var tickets = await _ticketsService.GetAllTickets();
+            return base.Ok(tickets);
         }
     }
 }

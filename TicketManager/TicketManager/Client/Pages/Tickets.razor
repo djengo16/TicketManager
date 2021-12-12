@@ -1,0 +1,22 @@
+﻿@page "/tickets"
+@inject ITicketsService ticketsService
+@using TicketManager.Shared.ViewModels;
+<h3>Tickets</h3>
+<div class="card-columns">
+    @foreach (var ticket in ticketsService.Tickets)
+    {
+        <TicketCard Ticket="ticket"></TicketCard>
+    }
+    </div>
+
+
+    @code {
+        List<TicketListItem> tickets = new List<TicketListItem>();
+
+        protected override async Task OnInitializedAsync()
+        {
+            await ticketsService.GetTickets();
+            ;
+        }
+
+    }

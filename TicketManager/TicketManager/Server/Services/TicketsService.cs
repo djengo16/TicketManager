@@ -1,20 +1,25 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using TicketManager.Server.Data;
-using TicketManager.Server.Models;
-using TicketManager.Shared.DtoModels;
-using TicketManager.Shared.Models;
-
-namespace TicketManager.Server.Services
+﻿namespace TicketManager.Server.Services
 {
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.EntityFrameworkCore;
+    using System;
+    using System.Collections.Generic;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
+    using TicketManager.Server.Data;
+    using TicketManager.Server.Models;
+    using TicketManager.Shared.DtoModels;
+    using TicketManager.Shared.Models;
+    using TicketManager.Shared.ViewModels;
+    using System.Linq;
+
     public class TicketsService : ITicketsService
     {
         private ApplicationDbContext _dbContext;
         private readonly IHttpContextAccessor _httpContext;
 
-        public TicketsService(ApplicationDbContext dbContext, IHttpContextAccessor httpContext)
+        public TicketsService(ApplicationDbContext dbContext,
+            IHttpContextAccessor httpContext)
         {
             this._dbContext = dbContext;
             this._httpContext = httpContext;
@@ -37,6 +42,40 @@ namespace TicketManager.Server.Services
             await _dbContext.SaveChangesAsync();
 
             return ticket.Entity.Id;
+        }
+
+        public async Task<List<TicketListItem>> GetAllTickets()
+        {
+            var tickets = _dbContext.Tickets
+                .Where(x => x.Audience != Audience.Me)
+                .Select(x => new TicketListItem
+            {
+                Id = x.Id,
+                Title = x.Title,
+                Content = x.Content,
+                Creator = x.Creator.Email,
+                ReceiverId = x.ReceiverId,
+            });
+
+            return await tickets.ToListAsync();
+        }
+
+        public async Task<List<TicketListItem>> GetPrivateTickets()
+        {
+            var principal = _httpContext.HttpContext.User;
+            var loggedInUserId = principal.FindFirstValue(ClaimTypes.NameIdentifier);
+            var tickets = _dbContext.Tickets
+                .Where(x => x.Audience == Audience.Me && x.CreatorId == loggedInUserId)
+                .Select(x => new TicketListItem
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Content = x.Content,
+                    Creator = x.Creator.Email,
+                    ReceiverId = x.ReceiverId,
+                });
+
+            return await tickets.ToListAsync();
         }
     }
 }
