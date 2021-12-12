@@ -1,7 +1,31 @@
 ﻿@page "/"
+@inject ITicketsService ticketsService
+@using TicketManager.Shared.ViewModels;
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+@attribute [Authorize]
+<h3>Tickets</h3>
+<div class="card-columns">
+    @foreach (var ticket in ticketsService.Tickets)
+    {
+        <TicketCard Ticket="ticket"></TicketCard>
+    }
+</div>
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
+@code {
+        List<TicketListItem> tickets = new List<TicketListItem>();
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (!user.Identity.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo("account/login");
+        }
+        await ticketsService.GetTickets();
+    }
+
+}
