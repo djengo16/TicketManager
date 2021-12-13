@@ -12,9 +12,9 @@ namespace TicketManager.Shared.ViewModels
         public string Title { get; set; }
         public string Content { get; set; }
         public string Audience { get; set; }
-        public string ImgUrl { get; set; }
         public string CreatorId { get; set; }
         public  string Creator { get; set; }
         public int ReceiverId { get; set; }
+        public string CreatedOn { get; set; }
     }
 }
