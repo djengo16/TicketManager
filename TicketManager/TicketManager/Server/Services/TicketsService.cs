@@ -36,7 +36,6 @@
                 Title = ticketInput.Title,
                 ReceiverId = ticketInput.ReceiverId,
                 CreatorId = loggedInUserId,
-                ImgUrl = ticketInput.ImgUrl,
                 Audience = (Audience)Enum.Parse(typeof(Audience), ticketInput.Audience),
         });
             await _dbContext.SaveChangesAsync();
