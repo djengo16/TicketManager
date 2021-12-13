@@ -3,7 +3,7 @@
 @using TicketManager.Shared.DtoModels;
 @inject ITicketsService ticketsService;
 
-<h3>Create new Ticket</h3>
+    <h3>Create new Ticket</h3>
     <div class="row">
         <div class="col-sm-9 col-md-7 col-lg-5 my-3">
             <EditForm Model="model" OnValidSubmit="Submit">
@@ -40,13 +40,13 @@
         </div>
     </div>
 
-@code {
-    public CreateTicketModel model { get; set; } = new CreateTicketModel();
+    @code {
+        public CreateTicketModel model { get; set; } = new CreateTicketModel();
 
-    async Task Submit()
-    {
-        await ticketsService.CreateTicket(model);
+        async Task Submit()
+        {
+            await ticketsService.CreateTicket(model);
 
-        this.NavigationManager.NavigateTo("/");        
+            this.NavigationManager.NavigateTo("/");
+        }
     }
-}

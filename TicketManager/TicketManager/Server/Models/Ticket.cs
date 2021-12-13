@@ -1,9 +1,10 @@
-﻿using TicketManager.Shared;
-using TicketManager.Shared.Models;
-
-namespace TicketManager.Server.Models
+﻿namespace TicketManager.Server.Models
 {
-    public class Ticket
+    using System;
+    using TicketManager.Server.Models.Common;
+    using TicketManager.Shared.Models;
+
+    public class Ticket : IAuditInfo
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -13,5 +14,7 @@ namespace TicketManager.Server.Models
         public string CreatorId { get; set; }
         public virtual ApplicationUser Creator { get; set; }
         public int ReceiverId { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public DateTime? ModifiedOn { get; set; }
     }
 }

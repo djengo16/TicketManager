@@ -4,6 +4,7 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager
 @attribute [Authorize]
+
 <h3>Tickets</h3>
 <div class="card-columns">
     @foreach (var ticket in ticketsService.Tickets)

@@ -10,5 +10,6 @@
         Task<int> CreateTicketAsync(CreateTicketModel ticketInput);
         Task<List<TicketListItem>> GetAllTickets();
         Task<List<TicketListItem>> GetPrivateTickets();
+        Task<TicketDetailsModel> GetTicket(string id);
     }
 }

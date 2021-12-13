@@ -37,7 +37,7 @@
                 ReceiverId = ticketInput.ReceiverId,
                 CreatorId = loggedInUserId,
                 ImgUrl = ticketInput.ImgUrl,
-                Audience = (Audience)Enum.Parse(typeof(Audience), ticketInput.Audience)
+                Audience = (Audience)Enum.Parse(typeof(Audience), ticketInput.Audience),
         });
             await _dbContext.SaveChangesAsync();
 
@@ -55,6 +55,7 @@
                 Content = x.Content,
                 Creator = x.Creator.Email,
                 ReceiverId = x.ReceiverId,
+                CreatedOn = x.CreatedOn.ToString("MM/dd/yyyy h:mm tt"),
             });
 
             return await tickets.ToListAsync();
@@ -76,6 +77,11 @@
                 });
 
             return await tickets.ToListAsync();
+        }
+
+        public Task<TicketDetailsModel> GetTicket(string id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
