@@ -78,9 +78,15 @@
             return await tickets.ToListAsync();
         }
 
-        public Task<TicketDetailsModel> GetTicket(string id)
+        public async Task<TicketDetailsModel> GetTicket(int id)
         {
-            throw new NotImplementedException();
+            var result = _dbContext.Tickets.Select(x => new TicketDetailsModel
+            {
+                Title = x.Title,
+                Content = x.Content,
+            }).FirstOrDefault(x => x.Id == id);
+
+            return result;
         }
     }
 }

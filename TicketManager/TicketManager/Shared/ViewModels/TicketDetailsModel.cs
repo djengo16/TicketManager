@@ -11,9 +11,8 @@
         public DateTime CreatedOn { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
-        public string SanitizedConten => new HtmlSanitizer().Sanitize(this.Content);
-        public string ImgUrl { get; set; }
-        public string CreatorName { get; set; }
+        public string SanitizedContent => new HtmlSanitizer().Sanitize(this.Content);
+        public string CreatorEmail { get; set; }
         public string CreatorRole { get; set; }
         public IEnumerable<TicketCommentModel> Comments { get; set; }
     }
