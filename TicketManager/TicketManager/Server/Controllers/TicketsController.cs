@@ -35,5 +35,13 @@ namespace TicketManager.Server.Controllers
             var tickets = await _ticketsService.GetAllTickets();
             return base.Ok(tickets);
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetSingleSuperHero(int id)
+        {
+            var ticket =  await this._ticketsService.GetTicket(id);
+
+            return Ok(ticket);
+        }
     }
 }

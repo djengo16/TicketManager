@@ -80,13 +80,25 @@
 
         public async Task<TicketDetailsModel> GetTicket(int id)
         {
-            var result = _dbContext.Tickets.Select(x => new TicketDetailsModel
+            var test = _dbContext.Tickets;
+
+            var result =  await _dbContext.Tickets
+                .Where(x => x.Id == id)
+                .Select(x => new TicketDetailsModel
             {
                 Title = x.Title,
                 Content = x.Content,
-            }).FirstOrDefault(x => x.Id == id);
+                CreatorEmail = x.Creator.Email,
+                CreatedOn = x.CreatedOn,
+                //Comments = x.Comments.Select(y => new TicketCommentModel
+                //{
+                //    CreatedOn = y.CreatedOn,
+                //    Content = y.Content,
+                //    UserEmail = y.User.Email,
+                //}).ToList()
+            }).FirstOrDefaultAsync();
 
-            return result;
+            return  result;
         }
     }
 }

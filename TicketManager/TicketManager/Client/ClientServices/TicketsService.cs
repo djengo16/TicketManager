@@ -24,6 +24,11 @@ namespace TicketManager.Client.ClientServices
            // var responseObj = await result.Content.ReadFromJsonAsync<CreateTicketModel>();
         }
 
+        public async Task<TicketDetailsModel> GetTicket(int id)
+        {
+            return await _httpClient.GetFromJsonAsync<TicketDetailsModel>($"api/tickets/{id}");
+        }
+
         public async Task<List<TicketListItem>> GetTickets()
         {
             Tickets =  await _httpClient.GetFromJsonAsync<List<TicketListItem>>("api/tickets");
