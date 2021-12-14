@@ -43,5 +43,14 @@ namespace TicketManager.Server.Controllers
 
             return Ok(ticket);
         }
+
+        [HttpDelete]
+        [Route("{id}")]
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            await this._ticketsService.DeleteTicket(id);
+            return Ok();
+        }
     }
 }

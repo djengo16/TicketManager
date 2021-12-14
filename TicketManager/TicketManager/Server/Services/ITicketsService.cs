@@ -11,5 +11,6 @@
         Task<List<TicketListItem>> GetAllTickets();
         Task<List<TicketListItem>> GetPrivateTickets();
         Task<TicketDetailsModel> GetTicket(int id);
+        Task DeleteTicket(int id);
     }
 }

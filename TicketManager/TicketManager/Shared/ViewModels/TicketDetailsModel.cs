@@ -14,6 +14,7 @@
         public string SanitizedContent => new HtmlSanitizer().Sanitize(this.Content);
         public string CreatorEmail { get; set; }
         public string CreatorRole { get; set; }
+        public string CreatorId { get; set; }
         public IEnumerable<TicketCommentModel> Comments { get; set; }
     }
 }

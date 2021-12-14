@@ -1,8 +1,10 @@
 ﻿@page "/"
 @inject ITicketsService ticketsService
 @using TicketManager.Shared.ViewModels;
+
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager
+
 @attribute [Authorize]
 
 <h3>Tickets</h3>

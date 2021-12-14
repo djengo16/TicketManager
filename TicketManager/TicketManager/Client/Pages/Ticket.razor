@@ -1,7 +1,9 @@
-﻿
-@page "/tickets/{id:int}"
-@inject ITicketsService ticketsService
+﻿@page "/tickets/{id:int}"
+
 @using TicketManager.Shared.ViewModels;
+@inject ITicketsService ticketsService
+@inject NavigationManager NavigationManager
+@inject HttpClient Http
 
 <h1>@Model.Title</h1>
 <div class="container-fluid mt-100">
@@ -15,10 +17,18 @@
                              class="d-block ui-w-40 rounded-circle" alt="">
                         <div class="media-body ml-3">
                             @Model.CreatorEmail
-                            <div class="text-muted small">
-                                <time datetime="@Model.CreatedOn.ToString("O")"></time>
+                            <div>
+                                <small>@Model.CreatedOn.ToString("dd/mm/yyyy hh:mm")</small>
                             </div>
                         </div>
+                        <button class="btn btn-primary"
+                                style="float:right"
+                                @onclick="@(()=>Update(Model.Id))">Update
+                        </button>
+                        <button class="btn btn-danger ml-2"
+                                style="float:right"
+                                @onclick="@(()=>Delete(Model.Id))">Delete
+                        </button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -40,16 +50,25 @@
         </div>
     </div>
 </div>
-
 @code {
     [Parameter]
     public int Id { get; set; }
     public TicketDetailsModel Model { get; set; } = new TicketDetailsModel();
-
 
     protected override async Task OnInitializedAsync()
     {
         Model = await ticketsService.GetTicket(Id);
     }
 
+    private async Task Delete(int id)
+    {
+        await Http.DeleteAsync($"/api/tickets/{id}");
+        StateHasChanged();
+        NavigationManager.NavigateTo("/");
+    }
+
+    void Update(int id)
+    {
+
+    }
 }

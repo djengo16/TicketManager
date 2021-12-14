@@ -86,10 +86,12 @@
                 .Where(x => x.Id == id)
                 .Select(x => new TicketDetailsModel
             {
+                Id = x.Id,
                 Title = x.Title,
                 Content = x.Content,
                 CreatorEmail = x.Creator.Email,
                 CreatedOn = x.CreatedOn,
+                CreatorId = x.CreatorId,
                 //Comments = x.Comments.Select(y => new TicketCommentModel
                 //{
                 //    CreatedOn = y.CreatedOn,
@@ -99,6 +101,16 @@
             }).FirstOrDefaultAsync();
 
             return  result;
+        }
+
+        public async Task DeleteTicket(int id)
+        {
+            var ticketToRemove = await _dbContext.Tickets
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
+
+           _dbContext.Remove(ticketToRemove);
+           await _dbContext.SaveChangesAsync();
         }
     }
 }
