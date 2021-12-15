@@ -28,11 +28,19 @@ namespace TicketManager.Client.ClientServices
         {
             return await _httpClient.GetFromJsonAsync<TicketDetailsModel>($"api/tickets/{id}");
         }
+        public async Task<CreateTicketModel> GetTicketToUpdate(int id)
+        {
+            return await _httpClient.GetFromJsonAsync<CreateTicketModel>($"api/tickets/toupdate/{id}");
+        }
 
         public async Task<List<TicketListItem>> GetTickets()
         {
             Tickets =  await _httpClient.GetFromJsonAsync<List<TicketListItem>>("api/tickets");
             return Tickets;
+        }
+        public async Task UpdateTicket(CreateTicketModel ticket, int id)
+        {
+            var result = await _httpClient.PutAsJsonAsync($"api/tickets/{id}", ticket);
         }
     }
 }

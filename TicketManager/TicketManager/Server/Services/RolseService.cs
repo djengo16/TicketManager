@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TicketManager.Server.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 
 namespace TicketManager.Server.Services
 {
@@ -31,6 +28,14 @@ namespace TicketManager.Server.Services
                 })
                 .OrderBy(x => x.Name)
                 .ToList().Select(x => new KeyValuePair<string, string>(x.Id, x.Name));
+        }
+
+        public string GetRoleById(int roleId)
+        {
+            string roleIdAsString = roleId.ToString();
+            var role = _dbContext.Roles.Where(x => x.Id == roleIdAsString).FirstOrDefault();
+
+            return role.Name;
         }
     }
 }

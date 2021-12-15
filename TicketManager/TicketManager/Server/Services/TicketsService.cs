@@ -17,12 +17,15 @@
     {
         private ApplicationDbContext _dbContext;
         private readonly IHttpContextAccessor _httpContext;
+        private readonly IRolesService _rolesService;
 
         public TicketsService(ApplicationDbContext dbContext,
-            IHttpContextAccessor httpContext)
+            IHttpContextAccessor httpContext,
+            IRolesService rolesService)
         {
             this._dbContext = dbContext;
             this._httpContext = httpContext;
+            this._rolesService = rolesService;
         }
 
         public async Task<int> CreateTicketAsync(CreateTicketModel ticketInput)
@@ -92,6 +95,7 @@
                 CreatorEmail = x.Creator.Email,
                 CreatedOn = x.CreatedOn,
                 CreatorId = x.CreatorId,
+                ReceiverRole = _rolesService.GetRoleById(x.ReceiverId),
                 //Comments = x.Comments.Select(y => new TicketCommentModel
                 //{
                 //    CreatedOn = y.CreatedOn,
@@ -105,12 +109,45 @@
 
         public async Task DeleteTicket(int id)
         {
-            var ticketToRemove = await _dbContext.Tickets
-                .Where(x => x.Id == id)
-                .FirstOrDefaultAsync();
+            var ticketToRemove = await this.GetTicketFromDb(id);
 
            _dbContext.Remove(ticketToRemove);
            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<CreateTicketModel> GetTicketToUpdate(int id)
+        {
+            var ticket =  await _dbContext.Tickets.Where(x => x.Id == id)
+                .Select(x => new CreateTicketModel
+                {
+                    CreatorId = x.CreatorId,
+                    Content = x.Content,
+                    Title = x.Title,
+                    Audience = x.Audience.ToString(),
+                })
+                .FirstOrDefaultAsync();
+
+            return ticket;
+        }
+
+        public async Task UpdateTicketAsync(CreateTicketModel updatedTicket, int id)
+        {
+            var ticketToUpdate =  await this.GetTicketFromDb(id);
+
+            ticketToUpdate.Title = updatedTicket.Title;
+            ticketToUpdate.Content = updatedTicket.Content;
+            ticketToUpdate.Audience = (Audience)Enum.Parse(typeof(Audience), updatedTicket.Audience);
+            ticketToUpdate.ReceiverId = updatedTicket.ReceiverId;
+
+            _dbContext.Tickets.Update(ticketToUpdate);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        private async Task<Ticket> GetTicketFromDb(int id)
+        {
+            return await _dbContext.Tickets
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
         }
     }
 }

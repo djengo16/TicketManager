@@ -8,9 +8,11 @@
     public interface ITicketsService
     {
         Task<int> CreateTicketAsync(CreateTicketModel ticketInput);
+        Task UpdateTicketAsync(CreateTicketModel ticketUpdate, int id);
         Task<List<TicketListItem>> GetAllTickets();
         Task<List<TicketListItem>> GetPrivateTickets();
         Task<TicketDetailsModel> GetTicket(int id);
+        Task<CreateTicketModel> GetTicketToUpdate(int id);
         Task DeleteTicket(int id);
     }
 }

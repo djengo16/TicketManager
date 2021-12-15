@@ -4,8 +4,10 @@
 @inject ITicketsService ticketsService
 @inject NavigationManager NavigationManager
 @inject HttpClient Http
-
-<h1>@Model.Title</h1>
+<div class="m-4">
+    <h1>@Model.Title</h1>
+    <h6>For @Model.ReceiverRole</h6>
+</div>
 <div class="container-fluid mt-100">
     <div class="row">
         <div class="col-md-12">
@@ -68,7 +70,7 @@
     }
 
     void Update(int id)
-    {
-
+    { 
+    NavigationManager.NavigateTo($"/updateticket/{id}");
     }
 }

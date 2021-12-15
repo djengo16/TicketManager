@@ -8,5 +8,7 @@ namespace TicketManager.Server.Services
         IEnumerable<KeyValuePair<string, string>> GetAllAsKeyValuePairs();
 
          Task CreateUserRole(string roleId, string userId);
+
+        string GetRoleById(int role);
     }
 }

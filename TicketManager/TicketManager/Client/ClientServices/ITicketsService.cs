@@ -10,6 +10,8 @@ namespace TicketManager.Client.ClientServices
         Task CreateTicket(CreateTicketModel ticket);
         Task<List<TicketListItem>> GetTickets();
         Task<TicketDetailsModel> GetTicket(int id);
+        Task<CreateTicketModel> GetTicketToUpdate(int id);
+        Task UpdateTicket(CreateTicketModel ticket, int id);
         List<TicketListItem> Tickets { get; set; }
     }
 }

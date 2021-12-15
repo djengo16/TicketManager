@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using TicketManager.Server.Models;
 using TicketManager.Server.Services;
 using TicketManager.Shared.DtoModels;
 
@@ -37,11 +34,28 @@ namespace TicketManager.Server.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetSingleSuperHero(int id)
+        public async Task<IActionResult> GetSignleTicket(int id)
         {
             var ticket =  await this._ticketsService.GetTicket(id);
 
             return Ok(ticket);
+        }
+
+        [HttpGet("toupdate/{id}")]
+        public async Task<IActionResult> GetTicketToUpdate(int id)
+        {
+            var ticket = await this._ticketsService.GetTicketToUpdate(id);
+
+            return Ok(ticket);
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> Update(int id, CreateTicketModel updatedTicket)
+        {
+            await _ticketsService.UpdateTicketAsync(updatedTicket, id);
+
+            return Ok();
         }
 
         [HttpDelete]
