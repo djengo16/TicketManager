@@ -27,6 +27,6 @@ namespace TicketManager.Shared.ViewModels
         public string CreatorId { get; set; }
         public  string Creator { get; set; }
         public int ReceiverId { get; set; }
-        public string CreatedOn { get; set; }
+        public DateTime CreatedOn { get; set; }
     }
 }

@@ -18,7 +18,7 @@
             </div>
             <div class="mb-3 ml-3 mr-3 mt-3">
                 <label for="@Model.Content" class="form-label">Content</label>
-                <Editor Field="() => Model.Content" Conf="@editorConf" @bind-Value="Model.Content" />
+                <Editor Field="() => Model.Content"   @bind-Value="Model.Content" />
             </div>
             <div class="mb-3 ml-3 mr-3 mt-3">
                 <label for="@Model.Audience" class="form-label">Select your audiance</label>
@@ -42,15 +42,14 @@
 @code {
     [Parameter] public int Id { get; set; }
     public CreateTicketModel Model { get; set; } = new CreateTicketModel();
-    private Dictionary<string, object> editorConf;
+    private Dictionary<string, object> editorConf = new Dictionary<string, object>();
+
     protected override async Task OnInitializedAsync()
     {
         Model = await ticketsService.GetTicketToUpdate(Id);
-        editorConf = new Dictionary<string, object>{
-   { "menubar", true },
-   { "plugins", "link image code" },
-   { "toolbar", "undo redo | styleselect | forecolor | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link image | code" }
- };
+        editorConf.Add("menubar", "true");
+        editorConf.Add("plugins", "link image code");
+        editorConf.Add("toolbar", "undo redo | styleselect | forecolor | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link image | code");
     }
 
     private async Task Update()

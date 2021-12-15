@@ -1,0 +1,9 @@
+﻿using System.Threading.Tasks;
+
+namespace TicketManager.Server.Services
+{
+    public interface ICommentsService
+    {
+        Task CreateCommentAsync(int ticketId, string userId, string content, int? parentId = null);
+    }
+}
