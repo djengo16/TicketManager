@@ -4,6 +4,6 @@ namespace TicketManager.Server.Services
 {
     public interface ICommentsService
     {
-        Task CreateCommentAsync(int ticketId, string userId, string content, int? parentId = null);
+        Task CreateCommentAsync(int ticketId, string content, int? parentId = null);
     }
 }

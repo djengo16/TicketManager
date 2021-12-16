@@ -25,6 +25,7 @@ namespace TicketManager.Client
             builder.Services.AddHttpContextAccessor();
 
             builder.Services.AddScoped<ITicketsService, TicketsService>();
+            builder.Services.AddScoped<ICommentsService, CommentsService>();
 
             await builder.Build().RunAsync();
         }

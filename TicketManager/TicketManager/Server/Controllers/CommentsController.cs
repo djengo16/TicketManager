@@ -14,13 +14,10 @@
     public class CommentsController : ControllerBase
     {
         private readonly ICommentsService _commentsService;
-        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CommentsController(ICommentsService commentsService,
-            UserManager<ApplicationUser> userManager)
+        public CommentsController(ICommentsService commentsService)
         {
             this._commentsService = commentsService;
-            this._userManager = userManager;
         }
 
         [Authorize]
@@ -40,9 +37,8 @@
             //    }
             //}
 
-            var userId = this._userManager.GetUserId(this.User);
-            await this._commentsService.CreateCommentAsync(input.PostId, userId, input.Content, parentId);
-            return this.RedirectToAction("ById", "Posts", new { id = input.PostId });
+            await this._commentsService.CreateCommentAsync(input.TicketId, input.Content, parentId);
+            return this.Ok();
         }
     }
 }

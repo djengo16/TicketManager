@@ -1,13 +1,16 @@
 ﻿@page "/tickets/{id:int}"
 
 @using TicketManager.Shared.ViewModels;
+@using TicketManager.Shared.DtoModels;
 @inject ITicketsService ticketsService
+@inject ICommentsService commnetsService
 @inject NavigationManager NavigationManager
 @inject HttpClient Http
-<div class="m-4">
+
+<div class="m-2">
     <h1>@Model.Title</h1>
 </div>
-<div class="container-fluid mt-100">
+<div class="container-fluid mt-50">
     <div class="row">
         <div class="col-md-12">
             <div class="card mb-4">
@@ -24,11 +27,13 @@
                         </div>
                         <button class="btn btn-primary"
                                 style="float:right"
-                                @onclick="@(()=>Update(Model.Id))">Update
+                                @onclick="@(()=>Update(Model.Id))">
+                            Update
                         </button>
                         <button class="btn btn-danger ml-2"
                                 style="float:right"
-                                @onclick="@(()=>Delete(Model.Id))">Delete
+                                @onclick="@(()=>Delete(Model.Id))">
+                            Delete
                         </button>
                     </div>
                 </div>
@@ -36,29 +41,54 @@
                     <article>
                         @((MarkupString)Model.SanitizedContent)
                     </article>
-
-                    @*@if (this.User.Identity.IsAuthenticated)
-                                    {
-                        <div class="px-4 pt-3">
-                            <button type="button" class="btn btn-primary float-right mb-3" onclick="showAddCommentForm(0)">
-                                <i class="fa fa-plus"></i>&nbsp; Comment
-                            </button>
-                        </div>
-                                        <div class="clearfix"></div>}
-                                    @{ DisplayComments(null); }*@
+                    <div class="px-4 pt-3">
+                        <button type="button"
+                                class="btn btn-primary float-right mb-3"
+                                @onclick="@(()=>ShowAddCommentForm())">
+                            <i class="fa fa-plus"></i>&nbsp; Comment
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                    @*@{ DisplayComments(null); }*@
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div hidden="@HideLabel">
+    <EditForm Model="CommentModel" OnValidSubmit="AddComment">
+        <input type="hidden" name="ParentId" value="0" />
+        <div>
+            <Editor Field="() => CommentModel.Content" @bind-Value="CommentModel.Content" />
+        </div>
+        <button class="btn btn-success btn-lg mt-1" type="submit">Add Comment</button>
+    </EditForm>
+</div>
+
 @code {
     [Parameter]
     public int Id { get; set; }
+
     public TicketDetailsModel Model { get; set; } = new TicketDetailsModel();
+    public CreateCommentModel CommentModel { get; set; } = new CreateCommentModel();
+    private bool HideLabel { get; set; } = true;
 
     protected override async Task OnInitializedAsync()
     {
         Model = await ticketsService.GetTicket(Id);
+    }
+
+    private void ShowAddCommentForm()
+    {
+        HideLabel = !HideLabel;
+    }
+
+    private async Task AddComment()
+    {
+        CommentModel.TicketId = this.Id;
+        await commnetsService.CreateComment(CommentModel);
+        HideLabel = true;
+        StateHasChanged();
     }
 
     private async Task Delete(int id)
@@ -69,7 +99,7 @@
     }
 
     void Update(int id)
-    { 
-    NavigationManager.NavigateTo($"/updateticket/{id}");
+    {
+        NavigationManager.NavigateTo($"/updateticket/{id}");
     }
 }

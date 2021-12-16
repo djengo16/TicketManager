@@ -1,5 +1,7 @@
 ﻿namespace TicketManager.Server.Services
 {
+    using Microsoft.AspNetCore.Http;
+    using System.Security.Claims;
     using System.Threading.Tasks;
     using TicketManager.Server.Data;
     using TicketManager.Server.Models;
@@ -7,19 +9,24 @@
     public class CommentsService : ICommentsService
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly IHttpContextAccessor _httpContext;
 
-        public CommentsService(ApplicationDbContext dbContext)
+        public CommentsService(ApplicationDbContext dbContext, IHttpContextAccessor contextAccessor)
         {
             this._dbContext = dbContext;
+            this._httpContext = contextAccessor;
         }
-        public async Task CreateCommentAsync(int ticketId, string userId, string content, int? parentId = null)
+        public async Task CreateCommentAsync(int ticketId, string content, int? parentId = null)
         {
+            var principal = _httpContext.HttpContext.User;
+            var loggedInUserId = principal.FindFirstValue(ClaimTypes.NameIdentifier);
+
             var comment = new Comment
             {
                 Content = content,
                 ParentId = parentId,
                 TicketId = ticketId,
-                UserId = userId,
+                UserId = loggedInUserId,
             };
 
             await _dbContext.Comments.AddAsync(comment);
