@@ -29,13 +29,13 @@
                     (int?)null :
                     input.ParentId;
 
-            //if (parentId.HasValue)
-            //{
-            //    if (!this.commentsService.IsInPostId(parentId.Value, input.PostId))
-            //    {
-            //        return this.BadRequest();
-            //    }
-            //}
+            if (parentId.HasValue)
+            {
+                if (!this._commentsService.IsInTicketId(parentId.Value, input.TicketId))
+                {
+                    return this.BadRequest();
+                }
+            }
 
             await this._commentsService.CreateCommentAsync(input.TicketId, input.Content, parentId);
             return this.Ok();

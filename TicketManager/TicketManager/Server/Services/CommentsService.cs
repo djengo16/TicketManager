@@ -1,6 +1,7 @@
 ﻿namespace TicketManager.Server.Services
 {
     using Microsoft.AspNetCore.Http;
+    using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
     using TicketManager.Server.Data;
@@ -31,6 +32,13 @@
 
             await _dbContext.Comments.AddAsync(comment);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public bool IsInTicketId(int commentId, int ticketId)
+        {
+            var commentTicketId = this._dbContext.Comments.Where(x => x.Id == commentId)
+                .Select(x => x.TicketId).FirstOrDefault();
+            return commentTicketId == ticketId;
         }
     }
 }
