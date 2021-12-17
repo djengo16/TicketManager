@@ -10,5 +10,7 @@ namespace TicketManager.Server.Services
          Task CreateUserRole(string roleId, string userId);
 
         string GetRoleById(int role);
+
+        string GetRoleIdByName(string name);
     }
 }

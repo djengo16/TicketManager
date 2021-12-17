@@ -37,5 +37,11 @@ namespace TicketManager.Server.Services
 
             return role.Name;
         }
+
+        public string GetRoleIdByName(string name)
+        {
+            return _dbContext.Roles.Where(x => x.Name.ToUpper() == name)
+                .FirstOrDefault().Id;
+        }
     }
 }

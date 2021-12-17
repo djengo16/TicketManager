@@ -77,7 +77,7 @@ namespace TicketManager.Server.Areas.Identity.Pages.Account
 
             [Required]
             [Display(Name = "Choose your role")]
-            public string RoleId { get; set; }
+            public string RoleName { get; set; }
 
         }
 
@@ -98,11 +98,10 @@ namespace TicketManager.Server.Areas.Identity.Pages.Account
                     Email = Input.Email,
                     Name = Input.Name,
                     Surname = Input.Surname};
-                //await _rolesService.CreateUserRole(Input.RoleId, user.Id);
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
-                await _userManager.AddToRoleAsync(user, Input.RoleId);
+                await _userManager.AddToRoleAsync(user, Input.RoleName);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");

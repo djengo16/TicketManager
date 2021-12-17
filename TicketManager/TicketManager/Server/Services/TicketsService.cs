@@ -14,6 +14,9 @@
     using System.Linq;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
+    using TicketManager.Shared;
+    using Microsoft.AspNetCore.Components.Authorization;
+    using Microsoft.AspNetCore.Identity;
 
     public class TicketsService : ITicketsService
     {
@@ -21,16 +24,19 @@
         private readonly IHttpContextAccessor _httpContext;
         private readonly IRolesService _rolesService;
         private readonly IConfigurationProvider mapper;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public TicketsService(ApplicationDbContext dbContext,
             IHttpContextAccessor httpContext,
             IRolesService rolesService,
-            IMapper mapper)
+            IMapper mapper,
+            UserManager<ApplicationUser> userManager)
         {
             this._dbContext = dbContext;
             this._httpContext = httpContext;
             this._rolesService = rolesService;
             this.mapper = mapper.ConfigurationProvider;
+            this._userManager = userManager;
         }
 
         public async Task<int> CreateTicketAsync(CreateTicketModel ticketInput)
@@ -53,6 +59,22 @@
 
         public async Task<List<TicketListItem>> GetAllTickets()
         {
+
+            var principal = _httpContext.HttpContext.User;
+            var loggedInUserId = principal.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var aspuser = await this._userManager.FindByIdAsync(loggedInUserId);
+
+            if (await _userManager.IsInRoleAsync(aspuser, Constants.TechnicalSupport))
+            {
+                return await GetTechnicalSupportTickets();
+            }
+            else if (await _userManager.IsInRoleAsync(aspuser, Constants.OfficeSupport))
+            {
+                return await GetOfficeSupportTickets();
+            }
+
+            //othervise return all of them
             var tickets = _dbContext.Tickets
                 .Where(x => x.Audience != Audience.Me)
                 .ProjectTo<TicketListItem>(this.mapper);
@@ -122,6 +144,27 @@
             return await _dbContext.Tickets
                 .Where(x => x.Id == id)
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<List<TicketListItem>> GetTechnicalSupportTickets()
+        {
+            var getTechSupportRoleId = int.Parse(_rolesService.GetRoleIdByName(Constants.TechnicalSupport));
+            var result =  _dbContext.Tickets
+                .Where(x => x.ReceiverId == getTechSupportRoleId)
+                .ProjectTo<TicketListItem>(this.mapper);
+
+            return await result.ToListAsync();
+        }
+
+        public async Task<List<TicketListItem>> GetOfficeSupportTickets()
+        {
+            var getOfficeSupportRoleId = int.Parse(_rolesService.GetRoleIdByName(Constants.OfficeSupport));
+
+            var result = _dbContext.Tickets
+                .Where(x => x.ReceiverId == getOfficeSupportRoleId)
+                .ProjectTo<TicketListItem>(this.mapper);
+
+            return await result.ToListAsync();
         }
     }
 }
