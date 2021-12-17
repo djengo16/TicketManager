@@ -15,7 +15,6 @@
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using TicketManager.Shared;
-    using Microsoft.AspNetCore.Components.Authorization;
     using Microsoft.AspNetCore.Identity;
 
     public class TicketsService : ITicketsService
@@ -67,16 +66,17 @@
 
             if (await _userManager.IsInRoleAsync(aspuser, Constants.TechnicalSupport))
             {
-                return await GetTechnicalSupportTickets();
+                return await GetTechnicalSupportTickets(loggedInUserId);
             }
             else if (await _userManager.IsInRoleAsync(aspuser, Constants.OfficeSupport))
             {
-                return await GetOfficeSupportTickets();
+                return await GetOfficeSupportTickets(loggedInUserId);
             }
 
             //othervise return all of them
             var tickets = _dbContext.Tickets
-                .Where(x => x.Audience != Audience.Me)
+                .Where(x => x.Audience != Audience.Me ||
+                  (x.Audience == Audience.Me && loggedInUserId == x.CreatorId))
                 .ProjectTo<TicketListItem>(this.mapper);
 
             return await tickets.ToListAsync();
@@ -146,22 +146,24 @@
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<List<TicketListItem>> GetTechnicalSupportTickets()
+        public async Task<List<TicketListItem>> GetTechnicalSupportTickets(string userId)
         {
-            var getTechSupportRoleId = int.Parse(_rolesService.GetRoleIdByName(Constants.TechnicalSupport));
+            var techSupportRoleId = int.Parse(_rolesService.GetRoleIdByName(Constants.TechnicalSupport));
             var result =  _dbContext.Tickets
-                .Where(x => x.ReceiverId == getTechSupportRoleId)
+                .Where(x => (x.ReceiverId == techSupportRoleId && x.Audience != Audience.Me) || 
+                (x.Audience == Audience.Me && x.CreatorId == userId))
                 .ProjectTo<TicketListItem>(this.mapper);
 
             return await result.ToListAsync();
         }
 
-        public async Task<List<TicketListItem>> GetOfficeSupportTickets()
+        public async Task<List<TicketListItem>> GetOfficeSupportTickets(string userId)
         {
             var getOfficeSupportRoleId = int.Parse(_rolesService.GetRoleIdByName(Constants.OfficeSupport));
 
             var result = _dbContext.Tickets
-                .Where(x => x.ReceiverId == getOfficeSupportRoleId)
+                .Where(x => (x.ReceiverId == getOfficeSupportRoleId && x.Audience != Audience.Me) ||
+                (x.Audience == Audience.Me && x.CreatorId == userId))
                 .ProjectTo<TicketListItem>(this.mapper);
 
             return await result.ToListAsync();

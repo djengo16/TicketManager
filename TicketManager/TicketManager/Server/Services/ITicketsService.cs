@@ -10,8 +10,8 @@
         Task<int> CreateTicketAsync(CreateTicketModel ticketInput);
         Task UpdateTicketAsync(CreateTicketModel ticketUpdate, int id);
         Task<List<TicketListItem>> GetAllTickets();
-        Task<List<TicketListItem>> GetTechnicalSupportTickets();
-        Task<List<TicketListItem>> GetOfficeSupportTickets();
+        Task<List<TicketListItem>> GetTechnicalSupportTickets(string userId);
+        Task<List<TicketListItem>> GetOfficeSupportTickets(string userId);
         Task<List<TicketListItem>> GetPrivateTickets();
         Task<TicketDetailsModel> GetTicket(int id);
         Task<CreateTicketModel> GetTicketToUpdate(int id);
