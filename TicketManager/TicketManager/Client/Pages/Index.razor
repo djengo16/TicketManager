@@ -7,8 +7,15 @@
 
 @attribute [Authorize]
 
-<h3>Tickets</h3>
-<div class="card-columns">
+<h3 style="justify-content:center;">Tickets</h3>
+<div class="row">
+    <select @onchange="@SortTickets"
+            class="custom-select custom-select-sm col-sm-4 mb-3 mt-3 ml-3">
+        <option selected value="Newest">Newest</option>
+        <option value="Oldest">Oldest</option>
+    </select>
+</div>
+<div class="row justify-content-center">
     @foreach (var ticket in ticketsService.Tickets)
     {
         <TicketCard Ticket="ticket"></TicketCard>
@@ -17,7 +24,23 @@
 
 
 @code {
-        List<TicketListItem> tickets = new List<TicketListItem>();
+    List<TicketListItem> tickets = new List<TicketListItem>();
+    public string SelectOption { get; set; }
+
+    void SortTickets(ChangeEventArgs e)
+    {
+        string value = e.Value.ToString();
+        if(value == "Oldest")
+        {
+            ticketsService.Tickets = ticketsService.Tickets.OrderBy(x => x.CreatedOn).ToList();
+            StateHasChanged();
+        }
+        else if (value == "Newest")
+        {
+            ticketsService.Tickets = ticketsService.Tickets.OrderByDescending(x => x.CreatedOn).ToList();
+            StateHasChanged();
+        }
+    }
 
     protected override async Task OnInitializedAsync()
     {

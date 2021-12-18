@@ -1,14 +1,18 @@
 ﻿@using TicketManager.Shared.ViewModels
 @inject NavigationManager NavigationManager
 
-<div class="card d-inline-block align-top" style="width: 13rem;">
-    <div class="card-body">
-        <h5 class="card-title">@Ticket.Title</h5>
-        <h6 class="card-subtitle mb-2 text-muted">@Ticket.CreatedOn.ToString("yyyy-MM-dd'T'HH:mm")</h6>
-        <p class="card-text">@Ticket.ShortContent</p>
-        <button class="btn btn-primary card-link" @onclick="@(()=>ShowTicket(Ticket.Id))">Details</button>
+
+    <div class="card border-info mb-3 ml-3" 
+         style="max-width: 18rem; cursor:pointer;">
+        <div class="card-header" 
+             @onclick="@(()=>ShowTicket(Ticket.Id))">@Ticket.Creator
+        <br />
+            <small>@Ticket.CreatedOn.ToString("g")</small></div>
+        <div class="card-body text-info">
+            <h5 class="card-title">@Ticket.Title</h5>
+            <p class="card-text">@Ticket.ShortContent</p>
+        </div>
     </div>
-</div>
 
 @code {
     [Parameter]

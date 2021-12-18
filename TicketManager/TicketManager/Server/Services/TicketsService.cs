@@ -77,6 +77,7 @@
             var tickets = _dbContext.Tickets
                 .Where(x => x.Audience != Audience.Me ||
                   (x.Audience == Audience.Me && loggedInUserId == x.CreatorId))
+                .OrderByDescending(x => x.CreatedOn)
                 .ProjectTo<TicketListItem>(this.mapper);
 
             return await tickets.ToListAsync();
@@ -88,6 +89,7 @@
             var loggedInUserId = principal.FindFirstValue(ClaimTypes.NameIdentifier);
             var tickets = _dbContext.Tickets
                 .Where(x => x.Audience == Audience.Me && x.CreatorId == loggedInUserId)
+                .OrderByDescending(x => x.CreatedOn)
                 .ProjectTo<TicketListItem>(this.mapper);
 
             return await tickets.ToListAsync();
@@ -120,6 +122,7 @@
                     Content = x.Content,
                     Title = x.Title,
                     Audience = x.Audience.ToString(),
+                    ReceiverId = x.ReceiverId,
                 })
                 .FirstOrDefaultAsync();
 
@@ -152,6 +155,7 @@
             var result =  _dbContext.Tickets
                 .Where(x => (x.ReceiverId == techSupportRoleId && x.Audience != Audience.Me) || 
                 (x.Audience == Audience.Me && x.CreatorId == userId))
+                .OrderByDescending(x => x.CreatedOn)
                 .ProjectTo<TicketListItem>(this.mapper);
 
             return await result.ToListAsync();
@@ -164,6 +168,7 @@
             var result = _dbContext.Tickets
                 .Where(x => (x.ReceiverId == getOfficeSupportRoleId && x.Audience != Audience.Me) ||
                 (x.Audience == Audience.Me && x.CreatorId == userId))
+                .OrderByDescending(x => x.CreatedOn)
                 .ProjectTo<TicketListItem>(this.mapper);
 
             return await result.ToListAsync();
