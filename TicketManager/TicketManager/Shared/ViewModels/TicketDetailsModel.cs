@@ -15,6 +15,7 @@
         public string CreatorEmail { get; set; }
         public string CreatorRole { get; set; }
         public string CreatorId { get; set; }
+        public bool IsOpened { get; set; }
         public string ReceiverRole { get; set; }
         public IEnumerable<TicketCommentModel> Comments { get; set; }
     }

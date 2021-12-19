@@ -13,6 +13,7 @@ namespace TicketManager.Shared.ViewModels
         public int Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
+        public bool IsOpened { get; set; }
         public string ShortContent
         {
             get

@@ -50,6 +50,7 @@
                 ReceiverId = ticketInput.ReceiverId,
                 CreatorId = loggedInUserId,
                 Audience = (Audience)Enum.Parse(typeof(Audience), ticketInput.Audience),
+                IsOpened = false,
             });
             await _dbContext.SaveChangesAsync();
 
@@ -102,7 +103,22 @@
                 .ProjectTo<TicketDetailsModel>(this.mapper)
                 .FirstOrDefaultAsync();
 
+            if (!result.IsOpened)
+            {
+                await UpdateTicketStatus(id);
+            }
+
             return result;
+        }
+
+        private async Task UpdateTicketStatus(int ticketId)
+        {
+            var ticket = await _dbContext.Tickets
+                .Where(x => x.Id == ticketId)
+                .FirstOrDefaultAsync();
+
+            ticket.IsOpened = true;
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task DeleteTicket(int id)

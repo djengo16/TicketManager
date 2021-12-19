@@ -2,17 +2,38 @@
 @inject NavigationManager NavigationManager
 
 
-    <div class="card border-info mb-3 ml-3" 
-         style="max-width: 18rem; cursor:pointer;">
-        <div class="card-header" 
-             @onclick="@(()=>ShowTicket(Ticket.Id))">@Ticket.Creator
-        <br />
-            <small>@Ticket.CreatedOn.ToString("g")</small></div>
+@if (!Ticket.IsOpened)
+{
+    <div class="card border-info mb-3 ml-3"
+         style="max-width: 18rem; cursor: pointer; background-color: #fff; box-shadow: 2px 2px 10px 2px #0ff;">
+        <div class="card-header"
+             @onclick="@(()=>ShowTicket(Ticket.Id))">
+            @Ticket.Creator
+            <br />
+            <small>@Ticket.CreatedOn.ToString("g")</small>
+        </div>
         <div class="card-body text-info">
             <h5 class="card-title">@Ticket.Title</h5>
             <p class="card-text">@Ticket.ShortContent</p>
         </div>
     </div>
+}
+else
+{
+    <div class="card border-info mb-3 ml-3"
+         style="max-width: 18rem; cursor: pointer;">
+        <div class="card-header"
+             @onclick="@(()=>ShowTicket(Ticket.Id))">
+            @Ticket.Creator
+            <br />
+            <small>@Ticket.CreatedOn.ToString("g")</small>
+        </div>
+        <div class="card-body text-info">
+            <h5 class="card-title">@Ticket.Title</h5>
+            <p class="card-text">@Ticket.ShortContent</p>
+        </div>
+    </div>
+}
 
 @code {
     [Parameter]

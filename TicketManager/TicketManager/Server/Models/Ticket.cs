@@ -18,6 +18,7 @@
         public string CreatorId { get; set; }
         public virtual ApplicationUser Creator { get; set; }
         public int ReceiverId { get; set; }
+        public bool IsOpened { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime? ModifiedOn { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
